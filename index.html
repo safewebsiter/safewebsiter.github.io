@@ -22,7 +22,12 @@
         function getIPInfo() {
             // Use the ipinfo.io API to fetch the IP address and other details
             fetch(`https://ipinfo.io/json?token=${API_KEY}`)
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch IP info');
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     // Extract and display IP address information
                     const ipAddress = data.ip || 'N/A';
@@ -44,7 +49,7 @@ ISP: ${isp}
                     `;
                 })
                 .catch(error => {
-                    // If there is an error, display it
+                    // If there is an error, display it directly on the page
                     document.getElementById('ip-info').innerText = `Error: ${error.message}`;
                 });
         }
