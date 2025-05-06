@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IP Info Display</title>
+</head>
+<body>
+    <h1>Your IP Information</h1>
+    <p><strong>IP Address:</strong> <span id="ip-address">Loading...</span></p>
+
+    <h2>IP Information:</h2>
+    <pre id="ip-info">
+        Loading information...
+    </pre>
+
+    <script>
+        // Replace with your actual ipinfo.io API key
+        const API_KEY = '2c223676ef65df';  // Use this as a placeholder; replace it with your actual API key
+
+        // Get user's IP address using ipinfo.io API
+        function getIPInfo() {
+            // Use the ipinfo.io API to fetch the IP address and other details
+            fetch(`https://ipinfo.io/json?token=${API_KEY}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Extract and display IP address information
+                    const ipAddress = data.ip || 'N/A';
+                    const country = data.country || 'N/A';
+                    const region = data.region || 'N/A';
+                    const city = data.city || 'N/A';
+                    const location = data.loc || 'N/A';
+                    const isp = data.org || 'N/A';
+
+                    // Display the information on the page
+                    document.getElementById('ip-address').innerText = ipAddress;
+                    document.getElementById('ip-info').innerText = `
+IP: ${ipAddress}
+Country: ${country}
+Region: ${region}
+City: ${city}
+Location: ${location}
+ISP: ${isp}
+                    `;
+                })
+                .catch(error => {
+                    // If there is an error, display it
+                    document.getElementById('ip-info').innerText = `Error: ${error.message}`;
+                });
+        }
+
+        // Call the function to get IP info when the page loads
+        window.onload = getIPInfo;
+    </script>
+</body>
+</html>
